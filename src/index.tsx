@@ -3,10 +3,40 @@ import ReactDOM from "react-dom"
 import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
+import {
+  ApolloClient,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache,
+  split,
+} from "@apollo/client"
+import { WebSocketLink } from "@apollo/client/link/ws"
+import { getMainDefinition } from "@apollo/client/utilities"
+
+const httpLink = new HttpLink({
+  uri: "https://thecube.daresaycloud.co/graphql",
+})
+
+const wsLink = new WebSocketLink({
+  uri: "ws://thecube.daresaycloud.co/graphql",
+  options: {
+    reconnect: true,
+  },
+})
+
+const splitLink = split(
+  ({ query }) => {
+    const def = getMainDefinition(query)
+    return (
+      def.kind === "OperationDefinition" && def.operation === "subscription"
+    )
+  },
+  wsLink,
+  httpLink,
+)
 
 const client = new ApolloClient({
-  uri: "https://thecube.daresaycloud.co/graphql",
+  link: splitLink,
   cache: new InMemoryCache(),
 })
 
