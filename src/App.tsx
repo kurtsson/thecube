@@ -1,32 +1,10 @@
 import React from "react"
 import "./App.css"
-import { gql, useQuery, useSubscription } from "@apollo/client"
+import { gql, useQuery } from "@apollo/client"
 
 const THE_CUBE_QUERY = gql`
   query Cube {
-    cube {
-      id
-      sides {
-        id
-        red
-        green
-        blue
-      }
-    }
-  }
-`
-
-const SUBSCRIPTION = gql`
-  subscription CubeChange {
-    cubeChange {
-      id
-      sides {
-        id
-        red
-        green
-        blue
-      }
-    }
+    cube {}
   }
 `
 
@@ -52,10 +30,9 @@ const sideStyle = (side: Side | undefined): React.CSSProperties => {
 
 function App() {
   const query = useQuery<{ cube: Cube }>(THE_CUBE_QUERY)
-  const subscription = useSubscription<{ cubeChange: Cube }>(SUBSCRIPTION)
   if (query.loading) return <p>Loading...</p>
   if (query.error) return <p>Error :(</p>
-  const cube = subscription.data?.cubeChange || query.data?.cube
+  const cube = query.data?.cube
   const up = cube?.sides.find((side) => side.id === "up")
   const down = cube?.sides.find((side) => side.id === "down")
   const back = cube?.sides.find((side) => side.id === "back")
