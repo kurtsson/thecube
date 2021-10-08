@@ -53,6 +53,13 @@ const sideStyle = (side: Side | undefined): React.CSSProperties => {
   }
 }
 
+const spinnerSideStyle = (side: Side | undefined): React.CSSProperties => {
+  if (!side) return {}
+  return {
+    backgroundColor: `rgb(${side.red},${side.green},${side.blue},0.8)`,
+  }
+}
+
 function App() {
   const query = useQuery<{ cube: Cube }>(THE_CUBE_QUERY)
   const [mutateFunction] = useMutation(MUTATION)
@@ -84,78 +91,88 @@ function App() {
     })
   }
   return (
-    <table>
-      <tbody>
-        <tr>
-          <td></td>
-          <td style={sideStyle(up)}>
-            <input
-              type="color"
-              defaultValue={sideHex(up)}
-              onChange={(event) => {
-                changeColor("up", event.currentTarget.value)
-              }}
-            />
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style={sideStyle(left)}>
-            <input
-              type="color"
-              defaultValue={sideHex(left)}
-              onChange={(event) => {
-                changeColor("left", event.currentTarget.value)
-              }}
-            />
-          </td>
-          <td style={sideStyle(front)}>
-            <input
-              type="color"
-              defaultValue={sideHex(front)}
-              onChange={(event) => {
-                changeColor("front", event.currentTarget.value)
-              }}
-            />
-          </td>
-          <td style={sideStyle(right)}>
-            <input
-              type="color"
-              defaultValue={sideHex(right)}
-              onChange={(event) => {
-                changeColor("right", event.currentTarget.value)
-              }}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td style={sideStyle(down)}>
-            <input
-              type="color"
-              defaultValue={sideHex(down)}
-              onChange={(event) => {
-                changeColor("down", event.currentTarget.value)
-              }}
-            />
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td style={sideStyle(back)}>
-            <input
-              type="color"
-              defaultValue={sideHex(back)}
-              onChange={(event) => {
-                changeColor("back", event.currentTarget.value)
-              }}
-            />
-          </td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <table>
+        <tbody>
+          <tr>
+            <td></td>
+            <td style={sideStyle(up)}>
+              <input
+                type="color"
+                defaultValue={sideHex(up)}
+                onChange={(event) => {
+                  changeColor("up", event.currentTarget.value)
+                }}
+              />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style={sideStyle(left)}>
+              <input
+                type="color"
+                defaultValue={sideHex(left)}
+                onChange={(event) => {
+                  changeColor("left", event.currentTarget.value)
+                }}
+              />
+            </td>
+            <td style={sideStyle(front)}>
+              <input
+                type="color"
+                defaultValue={sideHex(front)}
+                onChange={(event) => {
+                  changeColor("front", event.currentTarget.value)
+                }}
+              />
+            </td>
+            <td style={sideStyle(right)}>
+              <input
+                type="color"
+                defaultValue={sideHex(right)}
+                onChange={(event) => {
+                  changeColor("right", event.currentTarget.value)
+                }}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={sideStyle(down)}>
+              <input
+                type="color"
+                defaultValue={sideHex(down)}
+                onChange={(event) => {
+                  changeColor("down", event.currentTarget.value)
+                }}
+              />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={sideStyle(back)}>
+              <input
+                type="color"
+                defaultValue={sideHex(back)}
+                onChange={(event) => {
+                  changeColor("back", event.currentTarget.value)
+                }}
+              />
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <div className="spinner">
+        <div className="face1" style={spinnerSideStyle(up)} />
+        <div className="face2" style={spinnerSideStyle(down)} />
+        <div className="face3" style={spinnerSideStyle(left)} />
+        <div className="face4" style={spinnerSideStyle(right)} />
+        <div className="face5" style={spinnerSideStyle(front)} />
+        <div className="face6" style={spinnerSideStyle(back)} />
+      </div>
+    </>
   )
 }
 
